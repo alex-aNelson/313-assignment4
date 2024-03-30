@@ -72,6 +72,11 @@ class Book(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.title
+    def display_genre(self):
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+    display_genre.short_description = 'Genre'
+    
+
 
 
 import uuid  # Required for unique book instances
@@ -119,7 +124,7 @@ class BookInstance(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.id} ({self.book.title})'
+        return f'{self.id} ({self.book.title}) {self.status} {self.due_back}'
 
 
 class Author(models.Model):
