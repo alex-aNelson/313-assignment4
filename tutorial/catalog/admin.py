@@ -17,19 +17,19 @@ class AuthorAdmin(admin.ModelAdmin):
 admin.site.register(Author, AuthorAdmin)
 # Register the Admin classes for Book using the decorator
 
-@admin.register(Book)
+admin.register(Book)
 class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
 
-@admin.register(Book)
+admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'display_genre')
 
     inlines = [BooksInstanceInline]
 
 # Register the Admin classes for BookInstance using the decorator
-@admin.register(BookInstance)
-@admin.register(BookInstance)
+admin.register(BookInstance)
+admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
     list_filter = ('status', 'due_back')
 
