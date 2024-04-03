@@ -1,8 +1,19 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import PermissionRequiredMixin
-
-# Create your views here.
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Author
 from .models import Book, Author, BookInstance, Genre
+from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
+import datetime
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from catalog.forms import RenewBookForm
+# Create your views here.
+
 
 def index(request):
     """View function for home page of site."""
@@ -32,8 +43,6 @@ def index(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'catalog/index.html', context=context)
 
-from django.views import generic
-
 class BookListView(generic.ListView):
     model = Book
 
@@ -43,8 +52,6 @@ class BookDetailView(generic.DetailView):
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
-
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     """Generic class-based view listing books on loan to current user."""
@@ -58,15 +65,6 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
             .filter(status__exact='o')
             .order_by('due_back')
         )
-
-import datetime
-
-from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
-from catalog.forms import RenewBookForm
 
 login_required
 permission_required('catalog.can_mark_returned', raise_exception=True)
@@ -100,10 +98,6 @@ def renew_book_librarian(request, pk):
     }
 
     return render(request, 'catalog/book_renew_librarian.html', context)
-
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Author
 
 class AuthorCreate(PermissionRequiredMixin, CreateView):
     model = Author
