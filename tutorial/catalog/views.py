@@ -126,7 +126,7 @@ class AuthorDelete(PermissionRequiredMixin, DeleteView):
             )
 
 class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
-    """Generic class-based view listing all books on loan. Only visible to users with can_mark_returned permission."""
+   
     model = BookInstance
     permission_required = 'catalog.can_mark_returned'
     template_name = 'catalog/bookinstance_list_borrowed_all.html'
@@ -136,10 +136,10 @@ class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
         return BookInstance.objects.filter(status__exact='o').order_by('due_back')
     
 class AuthorDetailView(generic.DetailView):
-    """Generic class-based detail view for an author."""
+    
     model = Author
 
 class AuthorListView(generic.ListView):
-    """Generic class-based list view for a list of authors."""
+
     model = Author
     paginate_by = 10

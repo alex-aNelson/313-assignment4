@@ -1,9 +1,11 @@
 from django.db import models
-
-# Create your models here.
-
+import uuid  # Required for unique book instances
+from datetime import date
 from django.urls import reverse  # To generate URLS by reversing URL patterns
 from datetime import date
+from django.conf import settings  # Required to assign User as a borrower
+from django.conf import settings
+# Create your models here.
 
 
 class Genre(models.Model):
@@ -22,7 +24,6 @@ class Genre(models.Model):
         """String for representing the Model object (in Admin site etc.)"""
         return self.name
 
-
 class Language(models.Model):
     """Model representing a Language (e.g. English, French, Japanese, etc.)"""
     name = models.CharField(max_length=200,
@@ -36,7 +37,6 @@ class Language(models.Model):
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
         return self.name
-
 
 class Book(models.Model):
     """Model representing a book (but not a specific copy of a book)."""
@@ -76,13 +76,6 @@ class Book(models.Model):
     def display_genre(self):
         return ', '.join(genre.name for genre in self.genre.all()[:3])
     display_genre.short_description = 'Genre'
-    
-
-import uuid  # Required for unique book instances
-from datetime import date
-
-from django.conf import settings  # Required to assign User as a borrower
-
 
 class BookInstance(models.Model):
     """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
@@ -148,5 +141,3 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
-
-from django.conf import settings
